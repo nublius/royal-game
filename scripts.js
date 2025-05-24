@@ -36,7 +36,7 @@ class Cell {
         this.isRosette = false;
     }
 
-    addOcupant(playerToken) {
+    addOccupant(playerToken) {
         this.#occupant = playerToken;
     }
 
