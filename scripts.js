@@ -13,7 +13,18 @@ const GameBoard = (function Board () {
 
             board.push(cell);
         }
-    }
+    };
+
+    initBoard();
+
+    return {
+        getBoard: () => board,
+        getCell: (index) => board[index],
+        resetBoard: () => {
+            board.length = 0;
+            initBoard();
+        }
+    };
 
 })();
 
