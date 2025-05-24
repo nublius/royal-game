@@ -32,7 +32,7 @@ const GameBoard = (function Board () {
             const cell = new Cell(i);
 
             // Mark Rosettes at indices
-            if ([4, 8, 14].includes(i)) {
+            if ([4, 8, 11, 17, 19].includes(i)) {
                 cell.isRosette = true;
             }
 
@@ -52,3 +52,6 @@ const GameBoard = (function Board () {
     };
 
 })();
+
+// PlayerAPath = [8, 7, 6, 5, 0, 9, 10, 11, 12, 13, 14, 15, 19, 18]
+// PlayerBPath = [4, 3, 2, 1, 0, 9, 10, 11, 12, 13, 14, 15, 17, 16]
