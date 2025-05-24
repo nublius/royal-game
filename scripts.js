@@ -1,3 +1,28 @@
+class Cell {
+    #occupant = null; // Private field
+
+    constructor(index) {
+        this.index = index;
+        this.isRosette = false;
+    }
+
+    addOccupant(playerToken) {
+        this.#occupant = playerToken;
+    }
+
+    getValue() {
+        return this.#occupant;        
+    }
+
+    removeOccupant() {
+        this.#occupant = null;
+    }
+
+    isOccupied() {
+        return this.#occupant !== null;
+    }
+}
+
 const GameBoard = (function Board () {
     const BOARD_SIZE = 20;
     const board = [];
@@ -27,28 +52,3 @@ const GameBoard = (function Board () {
     };
 
 })();
-
-class Cell {
-    #occupant = null; // Private field
-
-    constructor(index) {
-        this.index = index;
-        this.isRosette = false;
-    }
-
-    addOccupant(playerToken) {
-        this.#occupant = playerToken;
-    }
-
-    getValue() {
-        return this.#occupant;
-    }
-
-    removeOccupant() {
-        this.#occupant = null;
-    }
-
-    isOccupied() {
-        return this.#occupant !== null;
-    }
-}
