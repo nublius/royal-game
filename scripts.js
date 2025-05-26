@@ -61,6 +61,10 @@ class Token {
         return this._player;
     }
 
+    get hasExited() {
+        return this._hasExited;
+    }
+
     // Use these helper functions to update Token data
 
     exit() { 
@@ -96,7 +100,7 @@ class Player {
     }
 
     getAvailableTokens() {
-        return this.tokenArray.filter(token => token.isOnBoard && !token._hasExited);
+        return this.tokenArray.filter(token => token.isOnBoard && !token.hasExited);
     }
 }
 
@@ -117,15 +121,17 @@ const GameBoard = (function Board () {
         }
     };
 
+    const resetBoard = () => {
+        board.length = 0;
+        initBoard();
+    }
+
     initBoard();
 
     return {
         getBoard: () => board,
         getCell: (index) => board[index],
-        resetBoard: () => {
-            board.length = 0;
-            initBoard();
-        }
+        resetBoard
     };
 
 })();
