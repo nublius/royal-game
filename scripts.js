@@ -24,58 +24,57 @@ class Cell {
 }
 
 class Token {
-    constructor(player, tokenId){
-        // Private variables, do not handle these directly
-        this._player = player;
-        this._id = tokenId;
-        this._isOnBoard = false;
-        this._hasExited = false;
-        this._occupiedCell = null;
-    }
+  #player;
+  #id;
+  #isOnBoard = false;
+  #hasExited = false;
+  #occupiedCell = null;
 
-    get occupiedCell() {
-        return this._occupiedCell;
-    }
+  constructor(player, tokenId) {
+    this.#player = player;
+    this.#id = tokenId;
+  }
 
-    set occupiedCell(cell) { // Use this to validate occupiedCell (ex. token.occupiedCell = cell;)
-        if(cell) {
-            this._occupiedCell = cell;
-        } else {
-            return;
-        }
-    }
+  get occupiedCell() {
+    return this.#occupiedCell;
+  }
 
-    get tokenId() {
-        return this._id;
+  set occupiedCell(cell) {
+    if (cell) {
+      this.#occupiedCell = cell;
     }
+    // else do nothing
+  }
 
-    get isOnBoard() {
-        return this._isOnBoard;
-    }
+  get tokenId() {
+    return this.#id;
+  }
 
-    set isOnBoard(value) {
-        this._isOnBoard = value;
-    }
+  get isOnBoard() {
+    return this.#isOnBoard;
+  }
 
-    get tokenPlayer() {
-        return this._player;
-    }
+  set isOnBoard(value) {
+    this.#isOnBoard = value;
+  }
 
-    get hasExited() {
-        return this._hasExited;
-    }
+  get tokenPlayer() {
+    return this.#player;
+  }
 
-    // Use these helper functions to update Token data
+  get hasExited() {
+    return this.#hasExited;
+  }
 
-    exit() { 
-        this._hasExited = true;
-    }
+  exit() {
+    this.#hasExited = true;
+  }
 
-    reset() {
-        this._isOnBoard = false;
-        this._occupiedCell = null;
-        this._hasExited = false;
-    }
+  reset() {
+    this.#isOnBoard = false;
+    this.#occupiedCell = null;
+    this.#hasExited = false;
+  }
 }
 
 class Player {
@@ -140,3 +139,21 @@ const GameBoard = (function Board () {
 
 // PlayerAPath = [5, 6, 7, 8, 0, 9, 10, 11, 12, 13, 14, 15, 19, 18]
 // PlayerBPath = [1, 2, 3, 4, 0, 9, 10, 11, 12, 13, 14, 15, 17, 16]
+
+const playerA = new Player("Alice");
+playerA.initTokens("A");
+
+// Mark token as on board and not exited
+playerA.tokenArray[0].isOnBoard = true;
+
+console.log(playerA.getAvailableTokens().length === 1);
+
+playerA.tokenArray[0].exit();
+
+console.log(playerA.getAvailableTokens().length === 0);
+
+playerA.resetTokens();
+
+console.log(playerA.tokenArray.every(t => !t.isOnBoard && !t.hasExited)); // true
+
+
