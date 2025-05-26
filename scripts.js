@@ -24,84 +24,91 @@ class Cell {
 }
 
 class Token {
-  #player;
-  #id;
-  #isOnBoard = false;
-  #hasExited = false;
-  #occupiedCell = null;
+    #player; // Private field
+    #id;
+    #isOnBoard = false;
+    #hasExited = false;
+    #occupiedCell = null;
 
-  constructor(player, tokenId) {
-    this.#player = player;
-    this.#id = tokenId;
-  }
-
-  get occupiedCell() {
-    return this.#occupiedCell;
-  }
-
-  set occupiedCell(cell) {
-    if (cell) {
-      this.#occupiedCell = cell;
+    constructor(player, tokenId) {
+        this.#player = player;
+        this.#id = tokenId;
     }
-    // else do nothing
-  }
 
-  get tokenId() {
-    return this.#id;
-  }
+    get occupiedCell() {
+        return this.#occupiedCell;
+    }
 
-  get isOnBoard() {
-    return this.#isOnBoard;
-  }
+    set occupiedCell(cell) {
+        if (cell) {
+        this.#occupiedCell = cell;
+        }
+        // else do nothing
+    }
 
-  set isOnBoard(value) {
-    this.#isOnBoard = value;
-  }
+    get tokenId() {
+        return this.#id;
+    }
 
-  get tokenPlayer() {
-    return this.#player;
-  }
+    get isOnBoard() {
+        return this.#isOnBoard;
+    }
 
-  get hasExited() {
-    return this.#hasExited;
-  }
+    set isOnBoard(value) {
+        this.#isOnBoard = value;
+    }
 
-  exit() {
-    this.#hasExited = true;
-  }
+    get tokenPlayer() {
+        return this.#player;
+    }
 
-  reset() {
-    this.#isOnBoard = false;
-    this.#occupiedCell = null;
-    this.#hasExited = false;
-  }
+    get hasExited() {
+        return this.#hasExited;
+    }
+
+    exit() {
+        this.#hasExited = true;
+    }
+
+    reset() {
+        this.#isOnBoard = false;
+        this.#occupiedCell = null;
+        this.#hasExited = false;
+    }
 }
 
 class Player {
+    #name; // Private field
+    #tokenArray = [];
+
     constructor(name) {
-        this.name = name;
-        this.tokenArray = [];
+        this.#name = name;
+    }
+
+    get name() {
+        return this.#name;
     }
 
     initTokens(value) {
-        this.tokenArray = [];
-        for(let i = 0; i < 7; i++) {
-            const id = `${value}${i + 1}`;
-            const newToken = new Token(this.name, id);
-            this.tokenArray.push(newToken);
+        this.#tokenArray = [];
+        for (let i = 0; i < 7; i++) {
+        const id = `${value}${i + 1}`;
+        const newToken = new Token(this.#name, id);
+        this.#tokenArray.push(newToken);
         }
     }
 
     resetTokens() {
-        for(let i = 0; i < this.tokenArray.length; i++) {
-            this.tokenArray[i].reset();
+        for (let i = 0; i < this.#tokenArray.length; i++) {
+        this.#tokenArray[i].reset();
         }
     }
 
     getAvailableTokens() {
-        return this.tokenArray.filter(token => token.isOnBoard && !token.hasExited);
+        return this.#tokenArray.filter(token => token.isOnBoard && !token.hasExited);
     }
 }
+
 
 const GameBoard = (function Board () {
     const BOARD_SIZE = 20;
