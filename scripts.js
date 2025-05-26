@@ -67,7 +67,20 @@ class Token {
     }
 
     set occupiedCell(cell) {
-        this._occupiedCell = cell;
+        if(cell) {
+            this._occupiedCell = cell;
+        } else {
+            return;
+        }
+    }
+
+    exit() {
+        this.hasExited = true;
+    }
+
+    reset() {
+        this.isOnBoard = false;
+        this._occupiedCell = null;
     }
 }
 
