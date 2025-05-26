@@ -53,6 +53,10 @@ class Token {
         return this._isOnBoard;
     }
 
+    set isOnBoard(value) {
+        this._isOnBoard = value;
+    }
+
     get tokenPlayer() {
         return this._player;
     }
