@@ -74,6 +74,21 @@ class Token {
     }
 }
 
+class Player {
+    constructor(name) {
+        this.name = name;
+        this.tokenArray = [];
+    }
+
+    initTokens(value) {
+        for(let i = 0; i < 7; i++) {
+            const id = `${value}${i + 1}`;
+            const newToken = new Token(this.name, id);
+            this.tokenArray.push(newToken);
+        }
+    }
+}
+
 const GameBoard = (function Board () {
     const BOARD_SIZE = 20;
     const board = [];
