@@ -10,7 +10,7 @@ class Cell {
         this.#occupant = playerToken;
     }
 
-    getValue() {
+    getOccupant() {
         return this.#occupant;        
     }
 
@@ -53,5 +53,23 @@ const GameBoard = (function Board () {
 
 })();
 
-// PlayerAPath = [8, 7, 6, 5, 0, 9, 10, 11, 12, 13, 14, 15, 19, 18]
-// PlayerBPath = [4, 3, 2, 1, 0, 9, 10, 11, 12, 13, 14, 15, 17, 16]
+class Token {
+    constructor(player, tokenId){
+        this.player = player;
+        this.id = tokenId;
+        this.isOnBoard = false;
+        this.hasExited = false;
+        this._occupiedCell = null;
+    }
+
+    get occupiedCell() {
+        return this._occupiedCell;
+    }
+
+    set occupiedCell(cell) {
+        this._occupiedCell = cell;
+    }
+}
+
+// PlayerAPath = [5, 6, 7, 8, 0, 9, 10, 11, 12, 13, 14, 15, 19, 18]
+// PlayerBPath = [1, 2, 3, 4, 0, 9, 10, 11, 12, 13, 14, 15, 17, 16]
