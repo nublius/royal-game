@@ -7,7 +7,11 @@ class Cell {
     }
 
     addOccupant(playerToken) {
-        this.#occupant = playerToken;
+        if(playerToken instanceof Token) {
+            this.#occupant = playerToken;
+        } else {
+            console.warn("addOccupant: argument is not a token instance");
+        }
     }
 
     getOccupant() {
@@ -18,7 +22,7 @@ class Cell {
         this.#occupant = null;
     }
 
-    isOccupied() {
+    get isOccupied() {
         return this.#occupant !== null;
     }
 }
@@ -42,6 +46,8 @@ class Token {
     set occupiedCell(cell) {
         if (cell) {
         this.#occupiedCell = cell;
+        } else {
+            console.warn("set occupiedCell: argument is not a cell instance");
         }
         // else do nothing
     }
@@ -146,21 +152,3 @@ const GameBoard = (function Board () {
 
 // PlayerAPath = [5, 6, 7, 8, 0, 9, 10, 11, 12, 13, 14, 15, 19, 18]
 // PlayerBPath = [1, 2, 3, 4, 0, 9, 10, 11, 12, 13, 14, 15, 17, 16]
-
-const playerA = new Player("Alice");
-playerA.initTokens("A");
-
-// Mark token as on board and not exited
-playerA.tokenArray[0].isOnBoard = true;
-
-console.log(playerA.getAvailableTokens().length === 1);
-
-playerA.tokenArray[0].exit();
-
-console.log(playerA.getAvailableTokens().length === 0);
-
-playerA.resetTokens();
-
-console.log(playerA.tokenArray.every(t => !t.isOnBoard && !t.hasExited)); // true
-
-
