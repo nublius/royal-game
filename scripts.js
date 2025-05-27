@@ -189,7 +189,20 @@ const GameController = (function Controller (playerOneName = "Player One", playe
         }
     }
 
+    const startGame = () => {
+        players[0].initTokens['A'];
+        players[1].initTokens['B'];
+
+        chooseFirstActivePlayer();
+        console.log(`Starting game with ${activePlayer.name}`);
+    }
+
     const getActivePlayer = () => activePlayer;
+
+    return {
+        getActivePlayer,
+        startGame
+    }
 })();
 
 // PlayerAPath = [5, 6, 7, 8, 0, 9, 10, 11, 12, 13, 14, 15, 19, 18]
