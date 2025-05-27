@@ -159,15 +159,27 @@ const Dice = (function Die(){
 })();
 
 const GameController = (function Controller (playerOneName = "Player One", playerTwoName = "Player Two") {
-    GameBoard.initBoard();
+    GameBoard.resetBoard();
 
     let gameOver = false;
     let winner = null;
+    let activePlayer;
 
     const players = [
         new Player(playerOneName),
         new Player(playerTwoName)
-    ];
+    ];  
+
+    const chooseFirstActivePlayer = () => {
+        let playerOneRoll, playerTwoRoll;
+
+        do {
+            playerOneRoll = Dice.roll();
+            playerTwoRoll = Dice.roll();
+        } while (playerOneRoll === playerTwoRoll);
+
+        activePlayer = playerOneRoll > playerTwoRoll ? players[0] : players[1];
+   }
 })();
 
 // PlayerAPath = [5, 6, 7, 8, 0, 9, 10, 11, 12, 13, 14, 15, 19, 18]
