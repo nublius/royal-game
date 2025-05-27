@@ -49,7 +49,6 @@ class Token {
         } else {
             console.warn("set occupiedCell: argument is not a cell instance");
         }
-        // else do nothing
     }
 
     get tokenId() {
@@ -138,17 +137,38 @@ const GameBoard = (function Board () {
         initBoard();
     }
 
-    initBoard();
-
     return {
         getBoard: () => board,
         getCell: (index) => board[index],
-        resetBoard
+        resetBoard,
+        initBoard
     };
 
 })();
 
+const Dice = (function Die(){
+    let die = [0, 0, 0, 0];
 
+    const roll = () => {
+        return die.reduce((sum) => {
+            return sum + Math.round(Math.random());
+        }, 0);
+    };
+
+    return { roll };
+})();
+
+const GameController = (function Controller (playerOneName = "Player One", playerTwoName = "Player Two") {
+    GameBoard.initBoard();
+
+    let gameOver = false;
+    let winner = null;
+
+    const players = [
+        new Player(playerOneName),
+        new Player(playerTwoName)
+    ];
+})();
 
 // PlayerAPath = [5, 6, 7, 8, 0, 9, 10, 11, 12, 13, 14, 15, 19, 18]
 // PlayerBPath = [1, 2, 3, 4, 0, 9, 10, 11, 12, 13, 14, 15, 17, 16]
