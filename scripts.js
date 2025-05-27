@@ -180,6 +180,16 @@ const GameController = (function Controller (playerOneName = "Player One", playe
 
         activePlayer = playerOneRoll > playerTwoRoll ? players[0] : players[1];
    }
+
+    const switchPlayerTurn = () => {
+        if(activePlayer) {
+            activePlayer = activePlayer === players[0] ? players[1] : players[0];
+        } else {
+            console.warn("Warning, chooseFirstActivePlayer not initialized.");
+        }
+    }
+
+    const getActivePlayer = () => activePlayer;
 })();
 
 // PlayerAPath = [5, 6, 7, 8, 0, 9, 10, 11, 12, 13, 14, 15, 19, 18]
