@@ -197,11 +197,33 @@ const GameController = (function Controller (playerOneName = "Player One", playe
         console.log(`Starting game with ${activePlayer.name}`);
     }
 
+    const printBoard = () => {
+        console.log(`                       
+                     _________
+                     |x||x||x|
+                     _________
+                     |x||x||x|
+                     _________
+                     |x||x||x|
+                     _________
+                     |x||x||x|
+                        ___
+                        |x|
+                        ___
+                        |x|
+                     _________
+                     |x||x||x|
+                     _________
+                     |x||x||x|
+        `)
+    }
+
     const getActivePlayer = () => activePlayer;
 
     return {
         getActivePlayer,
-        startGame
+        startGame,
+        printBoard
     }
 })();
 
