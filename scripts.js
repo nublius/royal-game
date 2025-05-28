@@ -164,11 +164,15 @@ const GameController = (function Controller (playerOneName = "Player One", playe
     let gameOver = false;
     let winner = null;
     let activePlayer;
+    const board = GameBoard.getBoard();
 
     const players = [
         new Player(playerOneName),
         new Player(playerTwoName)
     ];  
+
+    players[0].path = [1, 2, 3, 4, 0, 9, 10, 11, 12, 13, 14, 15, 17, 16];
+    players[1].path = [5, 6, 7, 8, 0, 9, 10, 11, 12, 13, 14, 15, 19, 18];
 
     const chooseFirstActivePlayer = () => {
         let playerOneRoll, playerTwoRoll;
@@ -197,24 +201,36 @@ const GameController = (function Controller (playerOneName = "Player One", playe
         console.log(`Starting game with ${activePlayer.name}`);
     }
 
+    const getSymbol = (index) => {
+        if(board[index].isOccupied) {
+            if(board[index].getOccupant().tokenPlayer === "Player One") {
+                return "O";
+            } else if(board[index].getOccupant().tokenPlayer === "Player Two") {
+                return "X";
+            }
+        } else if(!board[index].isOccupied) {
+            return " ";
+        }
+    }
+
     const printBoard = () => {
         console.log(`                       
                      _________
-                     |x||x||x|
+                     |${getSymbol(4)}||${getSymbol(0)}||${getSymbol(8)}|
                      _________
-                     |x||x||x|
+                     |${getSymbol(3)}||${getSymbol(9)}||${getSymbol(7)}|
                      _________
-                     |x||x||x|
+                     |${getSymbol(2)}||${getSymbol(10)}||${getSymbol(6)}|
                      _________
-                     |x||x||x|
+                     |${getSymbol(1)}||${getSymbol(11)}||${getSymbol(5)}|
                         ___
-                        |x|
+                        |${getSymbol(12)}|
                         ___
-                        |x|
+                        |${getSymbol(13)}|
                      _________
-                     |x||x||x|
+                     |${getSymbol(17)}||${getSymbol(14)}||${getSymbol(19)}|
                      _________
-                     |x||x||x|
+                     |${getSymbol(16)}||${getSymbol(15)}||${getSymbol(18)}|
         `)
     }
 
