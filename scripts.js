@@ -119,7 +119,7 @@ class Player {
     }
 
     getAvailableTokens() {
-        return this.#tokenArray.filter(token => token.isOnBoard && !token.hasExited);
+        return this.#tokenArray.filter(token => !token.hasExited);
     }
 }
 
@@ -247,12 +247,21 @@ const GameController = (function Controller (playerOneName = "Player One", playe
 
     const playerRoll = () => {
         if(activePlayer) {
-            const currentRoll = Dice.roll();
+            activePlayer.diceRoll = 0;
+            const currentRoll = Dice.roll()
             activePlayer.diceRoll = currentRoll;
             console.log(`${activePlayer.name} rolled a ${currentRoll}`);
         } else {
             console.warn("activePlayer not set!");
         }
+    }
+
+    const moveToken = (tokenId) => {
+        if(activePlayer.diceRoll === 0) {
+            console.warn("Player roll not set yet! Do: GameController.playerRoll();");
+            return;
+        }
+
     }
 
     return {
