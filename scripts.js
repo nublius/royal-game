@@ -85,6 +85,7 @@ class Token {
 class Player {
     #name; // Private field
     #tokenArray = [];
+    #diceRoll = 0;
 
     constructor(name) {
         this.#name = name;
@@ -92,6 +93,14 @@ class Player {
 
     get name() {
         return this.#name;
+    }
+
+    set diceRoll(score) {
+        this.#diceRoll = score;
+    }
+
+    get diceRoll() {
+        return this.#diceRoll;
     }
 
     initTokens(value) {
@@ -194,8 +203,8 @@ const GameController = (function Controller (playerOneName = "Player One", playe
     }
 
     const startGame = () => {
-        players[0].initTokens['A'];
-        players[1].initTokens['B'];
+        players[0].initTokens('A');
+        players[1].initTokens('B');
 
         chooseFirstActivePlayer();
         console.log(`Starting game with ${activePlayer.name}`);
@@ -236,10 +245,18 @@ const GameController = (function Controller (playerOneName = "Player One", playe
 
     const getActivePlayer = () => activePlayer;
 
+    const playerRoll = (activePlayer) => {
+        activePlayer.diceRoll = 0;
+        
+        const currentRoll = Dice.roll();
+
+        activePlayer.diceRoll = currentRoll;
+    }
+
     return {
         getActivePlayer,
         startGame,
-        printBoard
+        printBoard,
     }
 })();
 
