@@ -246,15 +246,20 @@ const GameController = (function Controller (playerOneName = "Player One", playe
     const getActivePlayer = () => activePlayer;
 
     const playerRoll = () => {
-        const currentRoll = Dice.roll();
-        activePlayer.diceRoll = currentRoll;
-        console.log(`${activePlayer.name} rolled a ${currentRoll}`);
+        if(activePlayer) {
+            const currentRoll = Dice.roll();
+            activePlayer.diceRoll = currentRoll;
+            console.log(`${activePlayer.name} rolled a ${currentRoll}`);
+        } else {
+            console.warn("activePlayer not set!");
+        }
     }
 
     return {
         getActivePlayer,
         startGame,
         printBoard,
+        playerRoll,
     }
 })();
 
