@@ -245,12 +245,10 @@ const GameController = (function Controller (playerOneName = "Player One", playe
 
     const getActivePlayer = () => activePlayer;
 
-    const playerRoll = (activePlayer) => {
-        activePlayer.diceRoll = 0;
-        
+    const playerRoll = () => {
         const currentRoll = Dice.roll();
-
         activePlayer.diceRoll = currentRoll;
+        console.log(`${activePlayer.name} rolled a ${currentRoll}`);
     }
 
     return {
