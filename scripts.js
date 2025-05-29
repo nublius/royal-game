@@ -192,7 +192,7 @@ const GameController = (function Controller (playerOneName = "Player One", playe
         } while (playerOneRoll === playerTwoRoll);
 
         activePlayer = playerOneRoll > playerTwoRoll ? players[0] : players[1];
-   }
+    };
 
     const switchPlayerTurn = () => {
         if(activePlayer) {
@@ -200,7 +200,7 @@ const GameController = (function Controller (playerOneName = "Player One", playe
         } else {
             console.warn("Warning, chooseFirstActivePlayer not initialized.");
         }
-    }
+    };
 
     const startGame = () => {
         players[0].initTokens('A');
@@ -208,7 +208,7 @@ const GameController = (function Controller (playerOneName = "Player One", playe
 
         chooseFirstActivePlayer();
         console.log(`Starting game with ${activePlayer.name}`);
-    }
+    };
 
     const getSymbol = (index) => {
         if(board[index].isOccupied) {
@@ -216,7 +216,7 @@ const GameController = (function Controller (playerOneName = "Player One", playe
         } else if(!board[index].isOccupied) {
             return "  ";
         }
-    }
+    };
 
     const printBoard = () => {
         console.log(`                       
@@ -237,7 +237,7 @@ const GameController = (function Controller (playerOneName = "Player One", playe
                     ______________
                      |${getSymbol(16)}||${getSymbol(15)}||${getSymbol(18)}|
         `)
-    }
+    };
 
     const getActivePlayer = () => activePlayer;
 
@@ -253,29 +253,29 @@ const GameController = (function Controller (playerOneName = "Player One", playe
         } else {
             console.warn("activePlayer not set, or rolled more than once");
         }
-    }
+    };
+
+    const isOpponentToken = (currentToken, otherToken) => {
+        if(currentToken.tokenPlayer === otherToken.tokenPlayer) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+
+    const isValidCell = (cell) => {
+        if(!cell.getOccupant()) {
+            return true;
+        } else if(cell.getOccupant() && !cell.isRosette) {
+            return true;
+        } else {
+            return false;
+        }
+    };
 
     const moveToken = (tokenId) => {
 
-        if(!activePlayer) {
-            console.warn("activePlayer not set! Do: GameController.startGame();");
-            return;
-        } else if(activePlayer.diceRoll === 0) {
-            console.warn("Player roll not set! Do: GameController.playerRoll();");
-            return;
-        }
-
-        const isAvailable = activePlayer.getAvailableTokens.map(obj => obj.getTokenId() === tokenId);
-
-        if(!isAvailable) {
-            console.warn("Selected token is not available");
-            return;
-        } else {
-
-        }
-
-        
-    }
+    };
 
     return {
         getActivePlayer,
