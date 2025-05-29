@@ -212,33 +212,29 @@ const GameController = (function Controller (playerOneName = "Player One", playe
 
     const getSymbol = (index) => {
         if(board[index].isOccupied) {
-            if(board[index].getOccupant().tokenPlayer === "Player One") {
-                return "O";
-            } else if(board[index].getOccupant().tokenPlayer === "Player Two") {
-                return "X";
-            }
+            return board[index].getOccupant().tokenId;
         } else if(!board[index].isOccupied) {
-            return " ";
+            return "  ";
         }
     }
 
     const printBoard = () => {
         console.log(`                       
-                     _________
+                    ______________
                      |${getSymbol(4)}||${getSymbol(0)}||${getSymbol(8)}|
-                     _________
+                    ______________
                      |${getSymbol(3)}||${getSymbol(9)}||${getSymbol(7)}|
-                     _________
+                    ______________
                      |${getSymbol(2)}||${getSymbol(10)}||${getSymbol(6)}|
-                     _________
+                    ______________
                      |${getSymbol(1)}||${getSymbol(11)}||${getSymbol(5)}|
-                        ___
-                        |${getSymbol(12)}|
-                        ___
-                        |${getSymbol(13)}|
-                     _________
+                         ____
+                         |${getSymbol(12)}|
+                         ____
+                         |${getSymbol(13)}|
+                    ______________
                      |${getSymbol(17)}||${getSymbol(14)}||${getSymbol(19)}|
-                     _________
+                    ______________
                      |${getSymbol(16)}||${getSymbol(15)}||${getSymbol(18)}|
         `)
     }
@@ -246,22 +242,32 @@ const GameController = (function Controller (playerOneName = "Player One", playe
     const getActivePlayer = () => activePlayer;
 
     const playerRoll = () => {
-        if(activePlayer) {
-            activePlayer.diceRoll = 0;
+        if(activePlayer && activePlayer.diceRoll === 0) {
             const currentRoll = Dice.roll()
             activePlayer.diceRoll = currentRoll;
             console.log(`${activePlayer.name} rolled a ${currentRoll}`);
         } else {
-            console.warn("activePlayer not set!");
+            console.warn("activePlayer not set, or rolled more than once");
         }
     }
 
     const moveToken = (tokenId) => {
-        if(activePlayer.diceRoll === 0) {
-            console.warn("Player roll not set yet! Do: GameController.playerRoll();");
+
+        if(!activePlayer) {
+            console.warn("activePlayer not set! Do: GameController.startGame();");
             return;
         }
 
+        if(activePlayer.diceRoll === 0) {
+            console.warn("Player roll not set! Do: GameController.playerRoll();");
+            return;
+        }
+
+        const isAvailable = activePlayer.getAvailableTokens.map(obj => obj.getTokenId() === tokenId);
+
+        if(!isAvailable) {
+            console.warn("Selected token is not available");
+        }
     }
 
     return {
