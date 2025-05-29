@@ -246,6 +246,10 @@ const GameController = (function Controller (playerOneName = "Player One", playe
             const currentRoll = Dice.roll()
             activePlayer.diceRoll = currentRoll;
             console.log(`${activePlayer.name} rolled a ${currentRoll}`);
+            if(currentRoll === 0) {
+                console.log("Next player's turn");
+                switchPlayerTurn();
+            }
         } else {
             console.warn("activePlayer not set, or rolled more than once");
         }
@@ -256,9 +260,7 @@ const GameController = (function Controller (playerOneName = "Player One", playe
         if(!activePlayer) {
             console.warn("activePlayer not set! Do: GameController.startGame();");
             return;
-        }
-
-        if(activePlayer.diceRoll === 0) {
+        } else if(activePlayer.diceRoll === 0) {
             console.warn("Player roll not set! Do: GameController.playerRoll();");
             return;
         }
@@ -267,7 +269,12 @@ const GameController = (function Controller (playerOneName = "Player One", playe
 
         if(!isAvailable) {
             console.warn("Selected token is not available");
+            return;
+        } else {
+
         }
+
+        
     }
 
     return {
