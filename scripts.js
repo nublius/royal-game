@@ -264,9 +264,9 @@ const GameController = (function Controller (playerOneName = "Player One", playe
     };
 
     const isValidCell = (cell) => {
-        if(!cell.getOccupant()) {
+        if(!cell.isOccupied) {
             return true;
-        } else if(cell.getOccupant() && !cell.isRosette) {
+        } else if(cell.isOccupied && !cell.isRosette) {
             return true;
         } else {
             return false;
@@ -274,7 +274,55 @@ const GameController = (function Controller (playerOneName = "Player One", playe
     };
 
     const moveToken = (tokenId) => {
+        const targetToken = activePlayer.getAvailableTokens().find(obj => obj.tokenId === tokenId);
+        const steps = activePlayer.diceRoll;
 
+        let currentIndex = 0;
+
+        if(targetToken.isOnBoard) {
+            currentIndex = targetToken.occupiedCell;
+        } else {
+            currentIndex = -1;
+        }
+
+        const nextIndex = currentIndex + steps;
+        const targetCellIndex = activePlayer.path[nextIndex];
+        const targetCell = GameBoard.getCell(targetCellIndex);
+
+        if(isValidCell(targetCell)) { // Check if cell is occupied or a rosette
+            if(targetCell.isOccupied) { // If it is occupied
+               const currentOccupant = targetCell.getOccupant(); // Get current occupier
+               if(isOpponentToken(targetToken, currentOccupant)) { // Check if current ocuppier's owner is same player
+                    targetCell.removeOccupant();
+                    currentOccupant.reset();
+
+                    targetCell.addOccupant(targetToken);
+                    targetToken.occupiedCell = targetCell;
+                    activePlayer.diceRoll = 0;
+                    printBoard();
+                    console.log(`Token ${targetToken.tokenId} removed ${currentOccupant.tokenId} from the board`);
+
+               } else if(!isOpponentToken(targetToken,currentOccupant)) { // Runs if targetCell is occupied and both tokens are from same player
+                console.warn("Not a valid move");
+               }
+            } else { // If not occupied, proceed
+                targetCell.addOccupant(targetToken);
+                targetToken.occupiedCell = targetCell;
+                activePlayer.diceRoll = 0;
+
+                printBoard();
+                console.log(`Token ${targetToken.tokenId} has moved ${steps} cells`);
+
+                if(targetCell.isRosette) {
+                    console.log("Landed on rosette. Roll for another turn.");
+                } else {
+                    switchPlayerTurn();
+                    console.log(`${activePlayer}'s turn! Roll`);
+                }
+            }
+        } else { // If all checks fail, not valid
+            console.warn("Not a valid move");
+        }
     };
 
     return {
@@ -282,6 +330,7 @@ const GameController = (function Controller (playerOneName = "Player One", playe
         startGame,
         printBoard,
         playerRoll,
+        moveToken,
     }
 })();
 
