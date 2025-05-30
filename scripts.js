@@ -20,6 +20,7 @@ class Cell {
 
     removeOccupant() {
         this.#occupant = null;
+        this.#occupant.occupiedCell = null;
     }
 
     get isOccupied() {
@@ -255,27 +256,13 @@ const GameController = (function Controller (playerOneName = "Player One", playe
         }
     };
 
-    const isOpponentToken = (currentToken, otherToken) => {
-        if(currentToken.tokenPlayer === otherToken.tokenPlayer) {
-            return false;
-        } else {
-            return true;
-        }
-    };
-
-    const isValidCell = (cell) => {
-        if(!cell.isOccupied) {
-            return true;
-        } else if(cell.isOccupied && !cell.isRosette) {
-            return true;
-        } else {
-            return false;
-        }
-    };
-
     const moveToken = (tokenId) => {
-        // Work on this
+        const steps = activePlayer.diceRoll;
+        const targetToken = activePlayer.getAvailableTokens().find(t => t.tokenId === tokenId);
+
+        // WORK ON THIS
     }
+
     return {
         getActivePlayer,
         startGame,
