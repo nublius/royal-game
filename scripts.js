@@ -216,7 +216,7 @@ const GameController = (function Controller (playerOneName = "Player One", playe
 
     const startGame = () => {
         winner = null;
-        
+
         players[0].initTokens('A');
         players[1].initTokens('B');
 
@@ -349,6 +349,7 @@ const GameController = (function Controller (playerOneName = "Player One", playe
         } else if(targetCell.isExit) {
             console.log(`${activePlayer.name}'s ${targetToken.tokenId} token has exited the board.`);
             switchPlayerTurn();
+            console.log(`${activePlayer.name}'s turn!`);
             activePlayer.diceRoll = 0;
             targetToken.exit();
         } else {
