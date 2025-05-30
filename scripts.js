@@ -4,6 +4,7 @@ class Cell {
     constructor(index) {
         this.index = index;
         this.isRosette = false;
+        this.isExit = false;
     }
 
     addOccupant(playerToken) {
@@ -80,6 +81,7 @@ class Token {
 
     exit() {
         this.#hasExited = true;
+        this.#isOnBoard = false;
     }
 
     reset() {
@@ -132,7 +134,7 @@ class Player {
 
 
 const GameBoard = (function Board () {
-    const BOARD_SIZE = 20;
+    const BOARD_SIZE = 22;
     const board = [];
 
     const initBoard = () => {
@@ -142,6 +144,9 @@ const GameBoard = (function Board () {
             // Mark Rosettes at indices
             if ([4, 8, 11, 17, 19].includes(i)) {
                 cell.isRosette = true;
+            }
+            if ([20, 21].includes(i)) {
+                cell.isExit = true;
             }
 
             board.push(cell);
@@ -187,8 +192,8 @@ const GameController = (function Controller (playerOneName = "Player One", playe
         new Player(playerTwoName)
     ];  
 
-    players[0].path = [1, 2, 3, 4, 0, 9, 10, 11, 12, 13, 14, 15, 17, 16];
-    players[1].path = [5, 6, 7, 8, 0, 9, 10, 11, 12, 13, 14, 15, 19, 18];
+    players[0].path = [1, 2, 3, 4, 0, 9, 10, 11, 12, 13, 14, 15, 16, 17, 20];
+    players[1].path = [5, 6, 7, 8, 0, 9, 10, 11, 12, 13, 14, 15, 18, 19, 21];
 
     const chooseFirstActivePlayer = () => {
         let playerOneRoll, playerTwoRoll;
@@ -204,6 +209,7 @@ const GameController = (function Controller (playerOneName = "Player One", playe
     const switchPlayerTurn = () => {
         if(activePlayer) {
             activePlayer = activePlayer === players[0] ? players[1] : players[0];
+            activePlayer.diceRoll = 0;
         } else {
             console.warn("Warning, chooseFirstActivePlayer not initialized.");
         }
@@ -268,6 +274,11 @@ const GameController = (function Controller (playerOneName = "Player One", playe
         let currentIndex = null;
         let currentCell = null;
 
+        if(steps === 0) {
+            console.warn("Not rolled yet! Roll by: GameController.playerRoll();");
+            return;
+        }
+
         if(targetToken.isOnBoard) { // If cell is on board
             currentIndex = activePlayer.path.indexOf(targetToken.occupiedCell.index);
             currentCell = targetToken.occupiedCell;
@@ -279,7 +290,17 @@ const GameController = (function Controller (playerOneName = "Player One", playe
         const targetCellIndex = activePlayer.path[targetIndex];
         const targetCell = GameBoard.getCell(targetCellIndex);
 
-        if(targetCell.isOccupied && targetCell.getOccupant.player === activePlayer) {
+        if (targetCellIndex === undefined) {
+            console.warn("Invalid move: Exceeds player's path.");
+            return;
+        }
+
+        if (targetCellIndex > GameBoard.getBoard().length - 1) {
+            console.log("Exceeds board bounds. Try a different token.") 
+                return;
+        }
+
+        if(targetCell.isOccupied && targetCell.getOccupant().tokenPlayer === activePlayer.name) {
             console.log("Cell is already taken by active player.");
             return;
         }
@@ -305,10 +326,14 @@ const GameController = (function Controller (playerOneName = "Player One", playe
 
         printBoard();
 
-
         if(targetCell.isRosette) {
             console.log("Landed on a rosette. Roll again!");
             activePlayer.diceRoll = 0;
+        } else if(targetCell.isExit) {
+            console.log(`${activePlayer.name}'s ${targetToken.tokenId} token has exited the board.`);
+            switchPlayerTurn();
+            activePlayer.diceRoll = 0;
+            targetToken.exit();
         } else {
             switchPlayerTurn();
             console.log(`${activePlayer.name}'s turn!`);
