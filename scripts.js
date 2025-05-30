@@ -182,7 +182,6 @@ const Dice = (function Die(){
 const GameController = (function Controller (playerOneName = "Player One", playerTwoName = "Player Two") {
     GameBoard.resetBoard();
 
-    let gameOver = false;
     let winner = null;
     let activePlayer;
     const board = GameBoard.getBoard();
@@ -216,6 +215,8 @@ const GameController = (function Controller (playerOneName = "Player One", playe
     };
 
     const startGame = () => {
+        winner = null;
+        
         players[0].initTokens('A');
         players[1].initTokens('B');
 
@@ -268,6 +269,23 @@ const GameController = (function Controller (playerOneName = "Player One", playe
         }
     };
 
+    const checkWin = () => {
+        const playerOneTokens = players[0].getAvailableTokens();
+        const playerTwoTokens = players[1].getAvailableTokens();
+
+        if(playerOneTokens.length === 0) {
+            winner = players[0]
+        } else if(playerTwoTokens.length === 0) {
+            winner = players[1];
+        } else {
+            return;
+        }
+
+        console.log(`${winner.name}} has cleared all of their tokens! ${winner.name} wins!`);
+        GameBoard.resetBoard();
+        activePlayer = null;
+    }
+
     const moveToken = (tokenId) => {
         let steps = activePlayer.diceRoll;
         const targetToken = activePlayer.getAvailableTokens().find(t => t.tokenId === tokenId);
@@ -310,7 +328,6 @@ const GameController = (function Controller (playerOneName = "Player One", playe
             return;
         }
 
-
         if(targetCell.isOccupied) {
             targetCell.getOccupant().reset();
             targetCell.removeOccupant();
@@ -350,5 +367,3 @@ const GameController = (function Controller (playerOneName = "Player One", playe
     }
 })();
 
-// PlayerAPath = [5, 6, 7, 8, 0, 9, 10, 11, 12, 13, 14, 15, 19, 18]
-// PlayerBPath = [1, 2, 3, 4, 0, 9, 10, 11, 12, 13, 14, 15, 17, 16]
