@@ -19,9 +19,14 @@ class Cell {
     }
 
     removeOccupant() {
+        const occupant = this.#occupant;
         this.#occupant = null;
-        this.#occupant.occupiedCell = null;
+
+        if (occupant) {
+            occupant.occupiedCell = null;
+        }
     }
+
 
     get isOccupied() {
         return this.#occupant !== null;
@@ -45,12 +50,13 @@ class Token {
     }
 
     set occupiedCell(cell) {
-        if (cell) {
-        this.#occupiedCell = cell;
-        } else {
+        if (cell !== null && !(cell instanceof Cell)) {
             console.warn("set occupiedCell: argument is not a cell instance");
+            return;
         }
+        this.#occupiedCell = cell;
     }
+
 
     get tokenId() {
         return this.#id;
@@ -257,10 +263,57 @@ const GameController = (function Controller (playerOneName = "Player One", playe
     };
 
     const moveToken = (tokenId) => {
-        const steps = activePlayer.diceRoll;
+        let steps = activePlayer.diceRoll;
         const targetToken = activePlayer.getAvailableTokens().find(t => t.tokenId === tokenId);
+        let currentIndex = null;
+        let currentCell = null;
 
-        // WORK ON THIS
+        if(targetToken.isOnBoard) { // If cell is on board
+            currentIndex = activePlayer.path.indexOf(targetToken.occupiedCell.index);
+            currentCell = targetToken.occupiedCell;
+        } else {
+            currentIndex = -1;
+        }
+
+        const targetIndex = currentIndex + steps;
+        const targetCellIndex = activePlayer.path[targetIndex];
+        const targetCell = GameBoard.getCell(targetCellIndex);
+
+        if(targetCell.isOccupied && targetCell.getOccupant.player === activePlayer) {
+            console.log("Cell is already taken by active player.");
+            return;
+        }
+
+        if(targetCell.isRosette && targetCell.isOccupied) {
+            console.log("Cannot put token on occupied rosette.");
+            return;
+        }
+
+
+        if(targetCell.isOccupied) {
+            targetCell.getOccupant().reset();
+            targetCell.removeOccupant();
+        }
+
+        if(currentCell !== null) {
+            currentCell.removeOccupant();
+        }
+
+        targetToken.isOnBoard = true;
+        targetToken.occupiedCell = targetCell;
+        targetCell.addOccupant(targetToken);
+
+        printBoard();
+
+
+        if(targetCell.isRosette) {
+            console.log("Landed on a rosette. Roll again!");
+            activePlayer.diceRoll = 0;
+        } else {
+            switchPlayerTurn();
+            console.log(`${activePlayer.name}'s turn!`);
+            activePlayer.diceRoll = 0;
+        }
     }
 
     return {
