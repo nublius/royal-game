@@ -358,6 +358,8 @@ const GameController = (function Controller (playerOneName = "Player One", playe
             console.log(`${activePlayer.name}'s turn!`);
             activePlayer.diceRoll = 0;
         }
+
+        checkWin();
     }
 
     return {
