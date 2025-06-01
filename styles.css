@@ -6,6 +6,8 @@
 
 body {
     background-color: #30343F;
+    display: flex;
+    justify-content: center;
 }
 
 .board__container {
