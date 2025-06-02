@@ -5,7 +5,7 @@
 }
 
 body {
-    background-color: #30343F;
+    background: url('images/paper.png') #2e2e2e;
 }
 
 #game__container {
@@ -18,9 +18,10 @@ body {
 
 #board__container {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(8, 1fr);
     width: 300px;
+    height: 800px;
     grid-template-areas: 
     "a4 a0 a8" 
     "a3 a9 a7" 
@@ -29,15 +30,22 @@ body {
     ". a12 ."
     ". a13 ."
     "a17 a14 a19"
-    "a16 a15 a18"
+    "a16 a15 a18";
 }
 
 .cell {
-    background-color: #E5D4CE;
+    all: unset;
+    background-color: #3c3c3c;
+    width: 100%;
+    height: 100%;
+    outline: 1px solid #f0e6d2;
+    cursor: pointer;
+}
+
+.rosette__icon {
+    fill: #f0e6d2;
     width: 100px;
     height: 100px;
-    border: 1px solid black;
-    cursor: pointer;
 }
 
 .player__container {
