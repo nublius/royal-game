@@ -6,15 +6,21 @@
 
 body {
     background-color: #30343F;
-    display: flex;
-    justify-content: center;
 }
 
-.board__container {
+#game__container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+#board__container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    width: 150px;
+    width: 300px;
     grid-template-areas: 
     "a4 a0 a8" 
     "a3 a9 a7" 
@@ -28,10 +34,16 @@ body {
 
 .cell {
     background-color: #E5D4CE;
-    width: 50px;
-    height: 50px;
+    width: 100px;
+    height: 100px;
     border: 1px solid black;
     cursor: pointer;
+}
+
+.player__container {
+    background-color: white;
+    width: 25vw;
+    height: 40vh;
 }
 
 #id0 {

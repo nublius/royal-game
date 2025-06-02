@@ -374,8 +374,12 @@ const GameController = (function Controller (playerOneName = "Player One", playe
 const DisplayController = (function Controller () {
 
     const initDipslay = () => {
-        
-    }
+        const boardContainer = document.querySelector("#board__container");
+
+        return {
+            boardContainer,
+        }
+    };
 
 })();
 
