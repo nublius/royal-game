@@ -370,3 +370,6 @@ const GameController = (function Controller (playerOneName = "Player One", playe
         moveToken,
     }
 })();
+
+// Things to refactor:
+// GameController - Handles too many functions, seperate responsibilities to other modules (ex. MoveEngine, RuleEngine, Renderer, PlayerManager, TurnManager)
