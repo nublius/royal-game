@@ -373,3 +373,10 @@ const GameController = (function Controller (playerOneName = "Player One", playe
 
 // Things to refactor:
 // GameController - Handles too many functions, seperate responsibilities to other modules (ex. MoveEngine, RuleEngine, Renderer, PlayerManager, TurnManager)
+
+// Renderer - simple, just prints board state onto console. Copy paste printBoard logic into a IIFE
+
+// Better move handling is high priority. Implement Rule Objects rather than if statements for every check
+
+// PlayerManager - handles initialization of players and player paths.
+
